@@ -10,6 +10,7 @@ module MMOWriter
 end
 
 # relative requires here
+require_relative 'models/story'
 
 module MMOWriter
   class App < Sinatra::Base
