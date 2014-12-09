@@ -18,14 +18,34 @@ require_relative 'models/vote'
 
 require_relative 'routes/write_story'
 
+Thread.abort_on_exception = true
+
 module MMOWriter
   class App < Sinatra::Base
-
+    attr_accessor :worker_started
     set :root, File.dirname(__FILE__)
+    
+    def start_background_thread
+      $mmowriter_worker_started = true
+      
+      # Background job thread
+      Thread.new do
+        loop do
+          target = Time.now.to_i + 1
+          while Time.now.to_i < target do sleep 0.05 end # sync with system clock
+
+          Story.where(:completed => false).each do |story|
+             # execute most popular action and clear if timeout has been reached
+            story.execute_most_popular_action_and_clear if (Time.now.to_i - story.date_created) % MMOWriter::VOTE_TIMEOUT == 0
+          end
+        end
+      end
+    end
     
     before '/*' do # Before everything
       # If user does not have a UUID, give them one
       response.set_cookie('u', SecureRandom.uuid) if request.cookies['u'].nil?
+      start_background_thread if !$mmowriter_worker_started
     end
     
     get '/' do

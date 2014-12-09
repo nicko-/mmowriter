@@ -33,5 +33,23 @@ module MMOWriter
       
       story_body
     end
+    
+    def most_popular_action
+      return nil if votes.length < 1
+      
+      votes_tally = {}
+      votes.each do |vote|
+        vote_hash = {:type => vote.action_type, :metadata => vote.action_metadata}
+        votes_tally[vote_hash] = 0 if votes_tally[vote_hash].nil?
+        votes_tally[vote_hash] += 1
+      end
+      votes_tally.sort_by {|_, v| v}.last[0]
+    end
+    
+    def execute_most_popular_action_and_clear
+      action = most_popular_action
+      add_action action if !action.nil?
+      votes.each {|v| v.delete}
+    end
   end
 end
