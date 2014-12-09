@@ -5,6 +5,8 @@ require 'securerandom'
 module MMOWriter
   NAME = 'MMOWriter'
   VERSION = '0.0.1'
+  
+  DB = Sequel.connect 'sqlite://mmowriter.db'
 end
 
 # relative requires here
