@@ -1,7 +1,7 @@
 module MMOWriter::Routes
   module WriteStory
     def self.registered app     
-      app.get '/w/:id' do
+      app.get '/w/:id/' do
         erb :write_story, :locals => {:story => MMOWriter::Story[params[:id]]}, :layout => :global
       end
       
