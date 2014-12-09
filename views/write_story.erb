@@ -32,8 +32,7 @@ function updateCountdown() {
   if(document.getElementById("countdown_timer").innerHTML < 0) location.reload();
 }
 
-setInterval(updatePopularVotes, 1000);
-setInterval(updateCountdown, 1000);
+setInterval(function() {updateCountdown(); updatePopularVotes();}, 1000);
 </script>
 <div class="user_input">
   <h1 id="countdown_timer"><%= 1 + (MMOWriter::VOTE_TIMEOUT - ((Time.now.to_i - story.date_created) % MMOWriter::VOTE_TIMEOUT)) %></h1>
@@ -67,4 +66,4 @@ setInterval(updateCountdown, 1000);
     </tr>
   </table>
 </div>
-<script type="text/javascript">updatePopularVotes(); updateCountdown();</script>
+<script type="text/javascript">updateCountdown(); updatePopularVotes();</script>
