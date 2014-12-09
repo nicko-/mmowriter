@@ -11,7 +11,7 @@ CREATE TABLE `story_actions` (
   `previous_action_id` INTEGER NOT NULL
 );
 CREATE TABLE `story_metadata` (
-  `story_id` INTEGER NOT NULL,
+  `story_id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   `date_created` INTEGER NOT NULL,
   `date_completed` INTEGER,
   `completed` INTEGER NOT NULL,
