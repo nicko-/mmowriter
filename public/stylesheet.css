@@ -52,4 +52,6 @@ body {
 
 .story {
   font-family: serif, Times, 'Times New Roman';
+  text-align: justify;
+  text-justify: inter-word;
 }
