@@ -1,5 +1,8 @@
 module MMOWriter::Models
   class Story < Sequel::Model(:stories)
+    one_to_many :actions
+    one_to_many :votes
+  
     def body words = nil
       # returns body of story
       #  words: amount of words from end of story to return
