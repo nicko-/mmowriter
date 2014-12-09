@@ -27,7 +27,8 @@ function postVote(type, metadata) {
 }
 
 function updateCountdown() {
-  document.getElementById("countdown_timer").innerHTML = document.getElementById("countdown_timer").innerHTML - 1
+  document.getElementById("countdown_timer").innerHTML = document.getElementById("countdown_timer").innerHTML - 1;
+  document.title = "<%= MMOWriter::NAME %> (" + document.getElementById("countdown_timer").innerHTML + ")";
   if(document.getElementById("countdown_timer").innerHTML < 0) location.reload();
 }
 
@@ -35,7 +36,7 @@ setInterval(updatePopularVotes, 1000);
 setInterval(updateCountdown, 1000);
 </script>
 <div class="user_input">
-  <h1 id="countdown_timer"><%= MMOWriter::VOTE_TIMEOUT - ((Time.now.to_i - story.date_created) % MMOWriter::VOTE_TIMEOUT) %></h1>
+  <h1 id="countdown_timer"><%= 1 + (MMOWriter::VOTE_TIMEOUT - ((Time.now.to_i - story.date_created) % MMOWriter::VOTE_TIMEOUT)) %></h1>
   <p class="user_input_hint">popular votes:</p>
   <div id="suggestion_buttons">
     loading suggestions...
@@ -66,4 +67,4 @@ setInterval(updateCountdown, 1000);
     </tr>
   </table>
 </div>
-<script type="text/javascript">updatePopularVotes();</script>
+<script type="text/javascript">updatePopularVotes(); updateCountdown();</script>
