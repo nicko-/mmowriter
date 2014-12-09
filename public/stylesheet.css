@@ -57,3 +57,8 @@ body {
   text-justify: inter-word;
   font-size: 13pt;
 }
+
+hr {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
