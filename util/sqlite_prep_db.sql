@@ -15,7 +15,6 @@ CREATE TABLE `story_metadata` (
   `date_created` INTEGER NOT NULL,
   `date_completed` INTEGER,
   `completed` INTEGER NOT NULL,
-  `archive_votes` INTEGER NOT NULL,
-  `archive_views` INTEGER NOT NULL
+  `archive_votes` INTEGER NOT NULL
 );
 COMMIT;
