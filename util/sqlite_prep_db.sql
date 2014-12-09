@@ -7,8 +7,7 @@ CREATE TABLE `votes` (
 CREATE TABLE `story_actions` (
   `story_id` INTEGER NOT NULL,
   `action_id` INTEGER NOT NULL,
-  `action` TEXT NOT NULL,
-  `previous_action_id` INTEGER NOT NULL
+  `action` TEXT NOT NULL
 );
 CREATE TABLE `story_metadata` (
   `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
