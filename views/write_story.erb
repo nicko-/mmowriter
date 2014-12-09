@@ -1,3 +1,69 @@
+<form id="hidden_form" action="/w/<%= story.id %>/" method="POST">
+  <input id="hidden_type" type="hidden" name="type">
+  <input id="hidden_metadata" type="hidden" name="metadata">
+</form>
 <div class="story">
   <%= Rack::Utils.escape_html story.body 50 %>
 </div>
+<hr>
+<script type="text/javascript">
+function updatePopularVotes() {
+  xhr = new XMLHttpRequest();
+  xhr.open("GET", "/w/<%= story.id %>/votes", true);
+  
+  xhr.onreadystatechange = function() {
+    if(xhr.status == 200) {
+      sButtons = document.getElementById("suggestion_buttons").innerHTML = xhr.responseText;
+    }
+  }  
+  
+  xhr.send();
+}
+
+function postVote(type, metadata) {
+  document.getElementById("hidden_type").value = type;
+  document.getElementById("hidden_metadata").value = metadata;
+  document.getElementById("hidden_form").submit();
+}
+
+function updateCountdown() {
+  document.getElementById("countdown_timer").innerHTML = document.getElementById("countdown_timer").innerHTML - 1
+  if(document.getElementById("countdown_timer").innerHTML < 0) location.reload();
+}
+
+setInterval(updatePopularVotes, 1000);
+setInterval(updateCountdown, 1000);
+</script>
+<div class="user_input">
+  <h1 id="countdown_timer"><%= MMOWriter::VOTE_TIMEOUT - ((Time.now.to_i - story.date_created) % MMOWriter::VOTE_TIMEOUT) %></h1>
+  <p class="user_input_hint">popular votes</p>
+  <div id="suggestion_buttons">
+    loading suggestions...
+  </div>
+  <p class="user_input_hint">or enter your own vote</p>
+  <table style="width: 100%">
+    <tr>
+      <td><b>vote for a word...</b></td>
+      <td>
+        <form action="/w/<%= story.id %>/" method="POST">
+          <input type="hidden" name="type" value="word">
+          <input type="text" style="height: 30px; text-align: center; font-size: 16px;" name="metadata">
+          <input type="submit" style="padding: 10px;" value="vote">
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td><b>...or an other option</b></td>
+      <td>
+        <button type="button" class="user_input_button_green" onclick="postVote('special_end_char', 'exclamation')">exclamation</button>
+        <button type="button" class="user_input_button_green" onclick="postVote('special_end_char', 'question')">question</button>
+        <button type="button" class="user_input_button_green" onclick="postVote('special_end_char', 'period')">period</button>
+        <button type="button" class="user_input_button_green" onclick="postVote('special_start_char', 'quotation open')">quotation open</button>
+        <button type="button" class="user_input_button_green" onclick="postVote('special_end_char', 'quotation close')">quotation close</button>
+        <button type="button" class="user_input_button_green" onclick="postVote('paragraph', '')">new paragraph</button>
+        <button type="button" class="user_input_button_red" onclick="postVote('story_end', '')">story end</button>
+      </td>
+    </tr>
+  </table>
+</div>
+<script type="text/javascript">updatePopularVotes();</script>

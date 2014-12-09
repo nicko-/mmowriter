@@ -34,7 +34,7 @@ module MMOWriter::Routes
             text = 'story end'
             color_string = '_red'
           end
-          out += "<button type=\"button\" class=\"user_input_button#{color_string}\"> #{vote[1]} vote#{'s' if vote[1] != 1} | " + text + "</button> "
+          out += "<button type=\"button\" class=\"user_input_button#{color_string}\" onclick=\"postVote('#{vote[0][:type]}', '#{vote[0][:metadata]}')\"> #{vote[1]} vote#{'s' if vote[1] != 1} | " + text + "</button> "
         end        
         out
       end
