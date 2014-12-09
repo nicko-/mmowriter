@@ -49,3 +49,7 @@ body {
   word-wrap: break-word;
   position: relative;
 }
+
+.story {
+  font-family: serif, Times, 'Times New Roman';
+}
