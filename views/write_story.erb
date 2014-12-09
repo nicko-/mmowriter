@@ -36,11 +36,11 @@ setInterval(updateCountdown, 1000);
 </script>
 <div class="user_input">
   <h1 id="countdown_timer"><%= MMOWriter::VOTE_TIMEOUT - ((Time.now.to_i - story.date_created) % MMOWriter::VOTE_TIMEOUT) %></h1>
-  <p class="user_input_hint">popular votes</p>
+  <p class="user_input_hint">popular votes:</p>
   <div id="suggestion_buttons">
     loading suggestions...
   </div>
-  <p class="user_input_hint">or enter your own vote</p>
+  <p class="user_input_hint">or enter your own:</p>
   <table style="width: 100%">
     <tr>
       <td><b>vote for a word...</b></td>
@@ -53,7 +53,7 @@ setInterval(updateCountdown, 1000);
       </td>
     </tr>
     <tr>
-      <td><b>...or an other option</b></td>
+      <td><b>...or another option</b></td>
       <td>
         <button type="button" class="user_input_button_green" onclick="postVote('special_end_char', 'exclamation')">exclamation</button>
         <button type="button" class="user_input_button_green" onclick="postVote('special_end_char', 'question')">question</button>
