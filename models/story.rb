@@ -1,5 +1,5 @@
 module MMOWriter::Models
-  class Story < Sequel::Model(:story_metadata)
+  class Story < Sequel::Model(:stories)
     def body words = nil
       # returns body of story
       #  words: amount of words from end of story to return

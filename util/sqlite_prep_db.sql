@@ -12,7 +12,7 @@ CREATE TABLE `story_actions` (
   `type` TEXT NOT NULL,
   `metadata` TEXT
 );
-CREATE TABLE `story_metadata` (
+CREATE TABLE `stories` (
   `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   `date_created` INTEGER NOT NULL,
   `date_completed` INTEGER,
