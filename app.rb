@@ -11,9 +11,12 @@ end
 
 # relative requires here
 require_relative 'models/story'
+require_relative 'models/action'
 
 module MMOWriter
   class App < Sinatra::Base
+    include Models
+    
     set :root, File.dirname(__FILE__)
     
     before '/*' do # Before everything
@@ -22,7 +25,7 @@ module MMOWriter
     end
     
     get '/' do
-      erb :home, :layout => :global
+      erb :write_story, :layout => :global, :locals => {:story => Story.where(:completed => false).last}
     end
   end
 end
