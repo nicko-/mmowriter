@@ -62,3 +62,11 @@ hr {
   margin-top: 15px;
   margin-bottom: 15px;
 }
+
+button {
+  color: #fff;
+  background-color: #0096ff;
+  border-style: none;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
