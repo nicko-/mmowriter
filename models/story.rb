@@ -1,4 +1,4 @@
-module MMOWriter::Models
+module MMOWriter
   class Story < Sequel::Model(:stories)
     one_to_many :actions
     one_to_many :votes
