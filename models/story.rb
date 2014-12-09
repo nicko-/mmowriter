@@ -1,35 +1,34 @@
 module MMOWriter::Models
-  class Story
-    def self.create
-      # Creates a story in the database, and returns a Story object
-      id = MMOWriter::DB[:story_metadata].insert :date_created  => Time.now.utc.to_i,
-                                                       :completed     => 0,
-                                                       :archive_votes => 0
-      Story[id]
-    end
-    
-    def self.[] id
-      raise 'no such story' if MMOWriter::DB[:story_metadata].where(:id => id).empty?
-      Story.new id
-    end
-    
-    attr_reader :id, :date_created
-    
-    def initialize id
-      @id = id
-      # Cache date_created, as it never changes.
-      @date_created = MMOWriter::DB[:story_metadata].where(:id => id).first[:date_created]
-    end
-    
-    def completed
-      MMOWriter::DB[:story_metadata].where(:id => @id).first[:completed] == 1
-    end
-    
-    def completed= value
-      MMOWriter::DB[:story_metadata].where(:id => @id).update :completed => value ? 1 : 0
-      if value
-        MMOWriter::DB[:story_metadata].where(:id => @id).update :date_completed => Time.now.utc.to_i
+  class Story < Sequel::Model(:story_metadata)
+    def body words = nil
+      # returns body of story
+      #  words: amount of words from end of story to return
+      actions = Action.where(:story_id => id)
+      if !words.nil?
+        actions = actions.to_a
+        actions = actions[-words .. -1] if words < actions.length
       end
+      
+      # create a string from actions in the dataset
+      story_body = ''
+      actions.each do |action|
+        case action.type
+        when 'word'
+          story_body += "#{action.metadata} "
+        when 'special_end_char'
+          story_body.chomp! ' ' # remove trailing space if it exists
+          story_body += "#{action.metadata} "
+        when 'special_start_char'
+          story_body += action.metadata
+        when 'paragraph'
+          story_body.chomp! ' ' # remove trailing space if it exists
+          story_body += "\n\n" # add two newlines for new paragraph
+        when 'story_end'
+          break # end of story, break
+        end
+      end
+      
+      story_body
     end
   end
 end
