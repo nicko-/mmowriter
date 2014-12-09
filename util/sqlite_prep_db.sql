@@ -6,7 +6,7 @@ CREATE TABLE `votes` (
   `action_metadata` TEXT,
   `uuid` TEXT NOT NULL
 );
-CREATE TABLE `story_actions` (
+CREATE TABLE `actions` (
   `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   `story_id` INTEGER NOT NULL,
   `type` TEXT NOT NULL,
