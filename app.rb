@@ -1,24 +1,26 @@
 require 'sinatra/base'
 require 'sequel'
 require 'securerandom'
+require 'json'
 
 module MMOWriter
   NAME = 'MMOWriter'
   VERSION = '0.0.1'
-  
+  VOTE_TIMEOUT = 30
+    
   DB = Sequel.connect 'sqlite://mmowriter.db'
 end
 
 # relative requires here
 require_relative 'models/story'
 require_relative 'models/action'
+require_relative 'models/vote'
 
 require_relative 'routes/write_story'
 
 module MMOWriter
   class App < Sinatra::Base
-    include Models
-    
+
     set :root, File.dirname(__FILE__)
     
     before '/*' do # Before everything
