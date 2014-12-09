@@ -2,7 +2,8 @@ BEGIN TRANSACTION;
 CREATE TABLE `votes` (
   `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   `story_id` INTEGER NOT NULL,
-  `action` TEXT NOT NULL,
+  `action_type` TEXT NOT NULL,
+  `action_metadata` TEXT,
   `uuid` TEXT NOT NULL
 );
 CREATE TABLE `story_actions` (
