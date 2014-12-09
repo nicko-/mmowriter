@@ -63,15 +63,16 @@ hr {
   margin-bottom: 15px;
 }
 
-button {
+button, input[type=submit] {
   color: #fff;
   background-color: #0096ff;
   border-style: none;
   padding-top: 4px;
   padding-bottom: 4px;
+  display: inline-block;
 }
 
-button:hover {
+button:hover, input[type=submit]:hover {
   background-color: rgba(0, 150, 255, 0.85);
 }
 
