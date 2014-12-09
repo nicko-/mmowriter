@@ -5,8 +5,8 @@ CREATE TABLE `votes` (
   `uuid` TEXT NOT NULL
 );
 CREATE TABLE `story_actions` (
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   `story_id` INTEGER NOT NULL,
-  `action_id` INTEGER NOT NULL,
   `action_type` INTEGER NOT NULL,
   `action_metadata` TEXT
 );
