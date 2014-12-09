@@ -71,10 +71,36 @@ button {
   padding-bottom: 4px;
 }
 
+button:hover {
+  background-color: rgba(0, 150, 255, 0.85);
+}
+
 .user_input {
   text-align: center;
 }
 
 .user_input_hint {
   color: #aaa;
+}
+
+.user_input_button {
+  padding: 10px;
+}
+
+.user_input_button_red {
+  padding: 10px;
+  background-color: #ee3322;
+}
+
+.user_input_button_red:hover {
+  background-color: rgba(238, 51, 34, 0.85);
+}
+
+.user_input_button_green {
+  padding: 10px;
+  background-color: #32CD32;
+}
+
+.user_input_button_green:hover {
+  background-color: rgba(50, 205, 50, 0.85);
 }
