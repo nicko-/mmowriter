@@ -13,6 +13,8 @@ end
 require_relative 'models/story'
 require_relative 'models/action'
 
+require_relative 'routes/write_story'
+
 module MMOWriter
   class App < Sinatra::Base
     include Models
@@ -27,5 +29,7 @@ module MMOWriter
     get '/' do
       erb :write_story, :layout => :global, :locals => {:story => Story.where(:completed => false).last}
     end
+    
+    register Routes::WriteStory
   end
 end
