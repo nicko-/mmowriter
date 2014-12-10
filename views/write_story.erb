@@ -7,15 +7,20 @@
 </div>
 <hr>
 <script type="text/javascript">
-function updatePopularVotes() {
-  xhr = new XMLHttpRequest();
-  xhr.open("GET", "/w/<%= story.id %>/votes", true);
+function updateOnClock() {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "/w/<%= story.id %>/ajax_on_clock", true);
   
   xhr.onreadystatechange = function() {
-    if(xhr.status == 200) {
-      sButtons = document.getElementById("suggestion_buttons").innerHTML = xhr.responseText;
+    if(xhr.readyState == 4 && xhr.status == 200) {
+      var jsonData = JSON.parse(xhr.responseText);
+      document.getElementById("suggestion_buttons").innerHTML = jsonData['h'];
+      timeoutLoadTime = new Date();
+      timeoutSincePageLoad = jsonData['c'];
+      
+      if(jsonData['s']) window.location = "/a/<%= story.id %>";
     }
-  }  
+  };
   
   xhr.send();
 }
@@ -26,20 +31,20 @@ function postVote(type, metadata) {
   document.getElementById("hidden_form").submit();
 }
 
-function updateCountdown() {
-  var countdown = Math.round(timeoutSincePageLoad - (((new Date()) - pageLoadTime) / 1000));
+function updateCountdown(value) {
+  var countdown = Math.round(timeoutSincePageLoad - (((new Date()) - timeoutLoadTime) / 1000));
   if(countdown < 0) {location.reload(); return;}
   document.getElementById("countdown_timer").innerHTML = countdown;
   document.title = "<%= MMOWriter::NAME %> (" + countdown + ")";
 }
 
-pageLoadTime = new Date();
+timeoutLoadTime = new Date();
 timeoutSincePageLoad = <%= (MMOWriter::VOTE_TIMEOUT - ((Time.now.to_i - story.date_created) % MMOWriter::VOTE_TIMEOUT)) %>;
 
-setInterval(function() {updateCountdown(); updatePopularVotes();}, 1000);
+setInterval(function() {updateOnClock();updateCountdown();}, 1000);
 </script>
 <div class="user_input">
-  <h1 id="countdown_timer"><%= 1 + (MMOWriter::VOTE_TIMEOUT - ((Time.now.to_i - story.date_created) % MMOWriter::VOTE_TIMEOUT)) %></h1>
+  <h1 id="countdown_timer"><%= (MMOWriter::VOTE_TIMEOUT - ((Time.now.to_i - story.date_created) % MMOWriter::VOTE_TIMEOUT)) %></h1>
   <p class="user_input_hint">popular votes:</p>
   <div id="suggestion_buttons">
     loading suggestions...
@@ -70,4 +75,4 @@ setInterval(function() {updateCountdown(); updatePopularVotes();}, 1000);
     </tr>
   </table>
 </div>
-<script type="text/javascript">updateCountdown(); updatePopularVotes();</script>
+<script type="text/javascript">updateOnClock(); updateCountdown();</script>
