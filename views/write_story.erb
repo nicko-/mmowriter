@@ -2,8 +2,8 @@
   <input id="hidden_type" type="hidden" name="type">
   <input id="hidden_metadata" type="hidden" name="metadata">
 </form>
-<div class="story">
-  <%= Rack::Utils.escape_html story.body 50 %>
+<div class="story" id="story">
+  <span style="font-style:italic;">please wait...</span>
 </div>
 <hr>
 <script type="text/javascript">
@@ -18,7 +18,32 @@ function updateOnClock() {
       timeoutLoadTime = new Date();
       timeoutSincePageLoad = jsonData['c'];
       
+      if(jsonData['c'] == 29) refreshPageData();
+    }
+  };
+  
+  xhr.send();
+}
+
+function refreshPageData() {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "/w/<%= story.id %>/ajax_on_refresh", true);
+  
+  xhr.onreadystatechange = function() {
+    if(xhr.readyState == 4 && xhr.status == 200) {
+      var jsonData = JSON.parse(xhr.responseText);
+      voted = jsonData['v'];
+      
+      if(voted) {
+        document.getElementById("user_input_complete").style.display = "block";
+        document.getElementById("user_input_voting").style.display = "none";
+      } else {
+        document.getElementById("user_input_complete").style.display = "none";
+        document.getElementById("user_input_voting").style.display = "block";
+      }
+      
       if(jsonData['s']) window.location = "/a/<%= story.id %>";
+      document.getElementById("story").innerHTML = jsonData['b'];
     }
   };
   
@@ -26,20 +51,32 @@ function updateOnClock() {
 }
 
 function postVote(type, metadata) {
-  document.getElementById("hidden_type").value = type;
-  document.getElementById("hidden_metadata").value = metadata;
-  document.getElementById("hidden_form").submit();
+  if(voted) return;
+  voted = true;
+  
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/w/<%= story.id %>", true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhr.send("type=" + type + "&metadata=" + encodeURIComponent(metadata));
+  
+  document.getElementById("user_input_complete").style.display = "block";
+  document.getElementById("user_input_voting").style.display = "none";
 }
 
-function updateCountdown(value) {
+function postCustomWordForm() {
+  postVote('word', document.getElementById('user_input_word').value);
+  document.getElementById('user_input_word').value = "";
+}
+
+function updateCountdown() {
   var countdown = Math.round(timeoutSincePageLoad - (((new Date()) - timeoutLoadTime) / 1000));
-  if(countdown < 0) {location.reload(); return;}
   document.getElementById("countdown_timer").innerHTML = countdown;
   document.title = "<%= MMOWriter::NAME %> (" + countdown + ")";
 }
 
 timeoutLoadTime = new Date();
 timeoutSincePageLoad = <%= (MMOWriter::VOTE_TIMEOUT - ((Time.now.to_i - story.date_created) % MMOWriter::VOTE_TIMEOUT)) %>;
+voted = false;
 
 setInterval(function() {updateOnClock();updateCountdown();}, 1000);
 </script>
@@ -49,30 +86,34 @@ setInterval(function() {updateOnClock();updateCountdown();}, 1000);
   <div id="suggestion_buttons">
     loading suggestions...
   </div>
-  <p class="user_input_hint">or enter your own:</p>
-  <table style="width: 100%">
-    <tr>
-      <td><b>vote for a word...</b></td>
-      <td>
-        <form action="/w/<%= story.id %>" method="POST">
-          <input type="hidden" name="type" value="word">
-          <input type="text" style="height: 30px; text-align: center; font-size: 16px;" name="metadata">
-          <input type="submit" style="padding: 10px;" value="vote">
-        </form>
-      </td>
-    </tr>
-    <tr>
-      <td><b>...or another option</b></td>
-      <td>
-        <button type="button" class="user_input_button_green" onclick="postVote('special_end_char', 'exclamation')">exclamation</button>
-        <button type="button" class="user_input_button_green" onclick="postVote('special_end_char', 'question')">question</button>
-        <button type="button" class="user_input_button_green" onclick="postVote('special_end_char', 'period')">period</button>
-        <button type="button" class="user_input_button_green" onclick="postVote('special_start_char', 'quotation open')">quotation open</button>
-        <button type="button" class="user_input_button_green" onclick="postVote('special_end_char', 'quotation close')">quotation close</button>
-        <button type="button" class="user_input_button_green" onclick="postVote('paragraph', '')">new paragraph</button>
-        <button type="button" class="user_input_button_red" onclick="postVote('story_end', '')">story end</button>
-      </td>
-    </tr>
-  </table>
+  <div id="user_input_voting">
+    <p class="user_input_hint">or enter your own:</p>
+    <table style="width: 100%">
+      <tr>
+        <td><b>vote for a word...</b></td>
+        <td>
+          <form onsubmit="postCustomWordForm();return false;">
+            <input id="user_input_word" type="text" style="height: 30px; text-align: center; font-size: 16px;">
+            <input type="submit" style="padding: 10px;" value="vote">
+          </form>
+        </td>
+      </tr>
+      <tr>
+        <td><b>...or another option</b></td>
+        <td>
+          <button type="button" class="user_input_button_green" onclick="postVote('special_end_char', 'exclamation')">exclamation</button>
+          <button type="button" class="user_input_button_green" onclick="postVote('special_end_char', 'question')">question</button>
+          <button type="button" class="user_input_button_green" onclick="postVote('special_end_char', 'period')">period</button>
+          <button type="button" class="user_input_button_green" onclick="postVote('special_start_char', 'quotation open')">quotation open</button>
+          <button type="button" class="user_input_button_green" onclick="postVote('special_end_char', 'quotation close')">quotation close</button>
+          <button type="button" class="user_input_button_green" onclick="postVote('paragraph', '')">new paragraph</button>
+          <button type="button" class="user_input_button_red" onclick="postVote('story_end', '')">story end</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div id="user_input_complete" style="display: none;">
+    <h2>thank you for voting</h2>
+  </div>
 </div>
-<script type="text/javascript">updateOnClock(); updateCountdown();</script>
+<script type="text/javascript">refreshPageData(); updateOnClock(); updateCountdown();</script>

@@ -43,7 +43,15 @@ module MMOWriter::Routes
           end
         end
         
-        JSON.generate({'h' => html_buttons, 'c' => (MMOWriter::VOTE_TIMEOUT - ((Time.now.to_i - story.date_created) % MMOWriter::VOTE_TIMEOUT)), 's' => story.completed})
+        JSON.generate({'h' => html_buttons, 'c' => (MMOWriter::VOTE_TIMEOUT - ((Time.now.to_i - story.date_created) % MMOWriter::VOTE_TIMEOUT))})
+      end
+      
+      app.get '/w/:id/ajax_on_refresh' do
+        content_type :json
+        story = MMOWriter::Story[params[:id]]
+        JSON.generate({'s' => story.completed, 
+                       'v' => !story.votes_dataset.where(:uuid => request.cookies['u']).empty?,
+                       'b' => story.body(50)})
       end
       
       app.post '/w/:id' do
