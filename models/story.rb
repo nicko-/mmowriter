@@ -31,7 +31,7 @@ module MMOWriter
             story_body += '" '
           end
         when 'special_start_char'
-          case action_metadata
+          case action.metadata
           when 'quotation open'
             story_body += '"'
           end
