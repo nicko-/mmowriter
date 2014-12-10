@@ -74,7 +74,7 @@ module MMOWriter::Routes
           # cast vote
           story.add_vote :action_type => 'word', :action_metadata => word, :uuid => request.cookies['u']
         when 'special_end_char'
-          raise 'invalid char type' if !['exclamation', 'question', 'period', 'quotation close'].include? params[:metadata]
+          raise 'invalid char type' if !['exclamation', 'question', 'period', 'comma', 'quotation close'].include? params[:metadata]
           # cast vote
           story.add_vote :action_type => 'special_end_char', :action_metadata => params[:metadata], :uuid => request.cookies['u']
         when 'special_start_char'

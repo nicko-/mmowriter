@@ -27,6 +27,8 @@ module MMOWriter
             story_body += '? '
           when 'period'
             story_body += '. '
+          when 'comma'
+            story_body += ', '
           when 'quotation close'
             story_body += '" '
           end
