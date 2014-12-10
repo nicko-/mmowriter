@@ -86,7 +86,7 @@ module MMOWriter::Routes
           story.add_vote :action_type => params[:type], :action_metadata => '', :uuid => request.cookies['u']
         end
         
-        redirect to("/w/#{params[:id]}") # Redirect to GET /w/id
+        'vote casted'
       end
     end
   end
