@@ -2,6 +2,7 @@ module MMOWriter::Routes
   module WriteStory
     def self.registered app     
       app.get '/w/:id' do
+        redirect to("/a/#{params[:id]}") if MMOWriter::Story[params[:id]].completed
         erb :write_story, :locals => {:story => MMOWriter::Story[params[:id]]}, :layout => :global
       end
       
