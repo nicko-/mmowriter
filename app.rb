@@ -19,8 +19,6 @@ require_relative 'models/vote'
 require_relative 'routes/write_story'
 require_relative 'routes/archive'
 
-Thread.abort_on_exception = true
-
 module MMOWriter
   class App < Sinatra::Base
     attr_accessor :worker_started
