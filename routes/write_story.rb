@@ -51,7 +51,7 @@ module MMOWriter::Routes
         story = MMOWriter::Story[params[:id]]
         JSON.generate({'s' => story.completed, 
                        'v' => !story.votes_dataset.where(:uuid => request.cookies['u']).empty?,
-                       'b' => story.body(50)})
+                       'b' => Rack::Utils.escape_html(story.body(50))})
       end
       
       app.post '/w/:id' do
