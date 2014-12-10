@@ -39,7 +39,7 @@ module MMOWriter::Routes
               text = 'story end'
               color_string = '_red'
             end
-            html_buttons += "<button type=\"button\" class=\"user_input_button#{color_string}\" onclick=\"postVote('#{vote[0][:type]}', '#{vote[0][:metadata]}')\"> #{vote[1]} vote#{'s' if vote[1] != 1} | " + text + "</button> "
+            html_buttons += "<button type=\"button\" class=\"user_input_button#{color_string}\" onclick=\"postVote('#{vote[0][:type]}', '#{vote[0][:metadata]}')\"> #{vote[1]} vote#{'s' if vote[1] != 1} | " + Rack::Utils.escape_html(text) + "</button> "
           end
         end
         
