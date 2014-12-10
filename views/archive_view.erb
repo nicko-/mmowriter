@@ -1,0 +1,9 @@
+<% if story.completed == 0 %>
+<div class="info_banner"><b>This story is still in-progress.</b> Help shape the future of this story <b><a href="/w/<%= story.id %>">now</a></b>.</div>
+<% else %>
+<div class="info_banner"><b>This story has been completed.</b> Completed on <%= Time.at(story.date_completed).utc.to_s %>.</div>
+<% end %>
+<h1>Story <%= story.id %></h1>
+<div class="story">
+<%= Rack::Utils.escape_html story.body %>
+</div>

@@ -105,3 +105,17 @@ button:hover, input[type=submit]:hover {
 .user_input_button_green:hover {
   background-color: rgba(50, 205, 50, 0.85);
 }
+
+.info_banner {
+  background-color: #fcf0ad;
+  color: #36301d;
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 2px;
+  text-align: center;
+}
+
+.info_banner a {
+  color: #36301d;
+}
