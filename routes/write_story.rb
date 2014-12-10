@@ -68,7 +68,7 @@ module MMOWriter::Routes
         when 'word'
           word = params[:metadata].split(' ')[0]
           raise 'word too short' if word.nil?
-          ['?', '!', '.', '"', "'", '(', ')', '[', ']', ':', ';'].each {|c| word.gsub! c, ''}
+          ['?', '!', '.', '"', "'", '(', ')', '[', ']', ':', ';', '<', '>'].each {|c| word.gsub! c, ''}
           raise 'word too short' if word.length < 1
           
           # cast vote
