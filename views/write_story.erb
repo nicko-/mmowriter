@@ -18,7 +18,7 @@ function updateOnClock() {
       timeoutLoadTime = new Date();
       timeoutSincePageLoad = jsonData['c'];
       
-      if(jsonData['c'] == 29) refreshPageData();
+      if(jsonData['c'] == <%= MMOWriter::VOTE_TIMEOUT - 1 %>) refreshPageData();
     }
   };
   
