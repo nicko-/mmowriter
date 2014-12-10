@@ -23,6 +23,8 @@ module MMOWriter
   class App < Sinatra::Base
     attr_accessor :worker_started
     set :root, File.dirname(__FILE__)
+    set :raise_errors, false
+    set :show_exceptions, false
     
     def start_background_thread
       $mmowriter_worker_started = true
@@ -49,6 +51,10 @@ module MMOWriter
     
     get '/' do
       erb :write_story, :layout => :global, :locals => {:story => Story.where(:completed => false).last}
+    end
+    
+    error do
+      erb :error, :layout => :global
     end
     
     register Routes::WriteStory
