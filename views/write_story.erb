@@ -1,4 +1,4 @@
-<form id="hidden_form" action="/w/<%= story.id %>/" method="POST">
+<form id="hidden_form" action="/w/<%= story.id %>" method="POST">
   <input id="hidden_type" type="hidden" name="type">
   <input id="hidden_metadata" type="hidden" name="metadata">
 </form>
@@ -45,7 +45,7 @@ setInterval(function() {updateCountdown(); updatePopularVotes();}, 1000);
     <tr>
       <td><b>vote for a word...</b></td>
       <td>
-        <form action="/w/<%= story.id %>/" method="POST">
+        <form action="/w/<%= story.id %>" method="POST">
           <input type="hidden" name="type" value="word">
           <input type="text" style="height: 30px; text-align: center; font-size: 16px;" name="metadata">
           <input type="submit" style="padding: 10px;" value="vote">
