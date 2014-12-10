@@ -17,6 +17,7 @@ require_relative 'models/action'
 require_relative 'models/vote'
 
 require_relative 'routes/write_story'
+require_relative 'routes/archive'
 
 Thread.abort_on_exception = true
 
@@ -53,5 +54,6 @@ module MMOWriter
     end
     
     register Routes::WriteStory
+    register Routes::Archive
   end
 end

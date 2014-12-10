@@ -1,0 +1,20 @@
+<%
+def story_table stories
+  out = '<table style="width:100%;">'
+  stories.each_slice(4) do |s|
+    out += '<tr>'
+    s.each do |story|
+      out += "<td><a href=\"/a/#{story.id}\">Story ##{story.id}</a></td>"
+    end
+    out += '</tr>'
+  end
+  out += '</table>'
+  out
+end
+%>
+<h1>Story Archive</h1>
+<h2>In-progress</h2>
+<%= story_table MMOWriter::Story.where(:completed => false) %>
+<hr>
+<h2>Completed</h2>
+<%= story_table MMOWriter::Story.where(:completed => true) %>
