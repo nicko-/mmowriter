@@ -62,6 +62,11 @@ module MMOWriter
       action = most_popular_action
       add_action action if !action.nil?
       votes.each {|v| v.delete}
+      
+      if !action.nil? && action[:type] == 'story_end'
+        update :completed => true, :date_completed => Time.now.utc.to_i # Set current story as complete
+        Story.create :date_created => Time.now.to_i, :completed => false, :archive_votes => 0 # Create new story
+      end
     end
   end
 end
