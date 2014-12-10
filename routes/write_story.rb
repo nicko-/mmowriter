@@ -1,6 +1,10 @@
 module MMOWriter::Routes
   module WriteStory
-    def self.registered app     
+    def self.registered app
+      app.before '/w/:id*' do
+        raise 'no such story with that id' if MMOWriter::Story[params[:id]].nil?
+      end
+    
       app.get '/w/:id' do
         redirect to("/a/#{params[:id]}") if MMOWriter::Story[params[:id]].completed == 1
         erb :write_story, :locals => {:story => MMOWriter::Story[params[:id]]}, :layout => :global
@@ -59,6 +63,9 @@ module MMOWriter::Routes
         # Process vote
         # First, error if user has already voted
         raise 'you have already voted' if !story.votes_dataset.where(:uuid => request.cookies['u']).empty?
+        
+        # Error if story is complete
+        raise 'this story is no longer accepting votes' if story.completed == 1
         
         # Error if input is invalid
         raise 'invalid action type' if !['word', 'special_start_char', 'special_end_char', 'paragraph', 'story_end'].include? params[:type]
