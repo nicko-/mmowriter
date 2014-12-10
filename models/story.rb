@@ -20,9 +20,21 @@ module MMOWriter
           story_body += "#{action.metadata} "
         when 'special_end_char'
           story_body.chomp! ' ' # remove trailing space if it exists
-          story_body += "#{action.metadata} "
+          case action.metadata
+          when 'exclamation'
+            story_body += '! '
+          when 'question'
+            story_body += '? '
+          when 'period'
+            story_body += '. '
+          when 'quotation close'
+            story_body += '" '
+          end
         when 'special_start_char'
-          story_body += action.metadata
+          case action_metadata
+          when 'quotation open'
+            story_body += '"'
+          end
         when 'paragraph'
           story_body.chomp! ' ' # remove trailing space if it exists
           story_body += "\n\n" # add two newlines for new paragraph
