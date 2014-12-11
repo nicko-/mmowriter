@@ -12,6 +12,7 @@ module MMOWriter::Routes
       
       app.get '/w/:id/ajax_on_clock' do
         content_type :json
+        cache_control :no_cache, :no_store
       
         story = MMOWriter::Story[params[:id]]
         html_buttons = ''
@@ -52,6 +53,8 @@ module MMOWriter::Routes
       
       app.get '/w/:id/ajax_on_refresh' do
         content_type :json
+        cache_control :no_cache, :no_store
+        
         story = MMOWriter::Story[params[:id]]
         JSON.generate({'s' => story.completed, 
                        'v' => !story.votes_dataset.where(:uuid => request.cookies['u']).empty?,
