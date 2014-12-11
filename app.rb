@@ -6,7 +6,7 @@ require 'json'
 module MMOWriter
   NAME = 'MMOWriter'
   VERSION = '0.0.1'
-  VOTE_TIMEOUT = 20
+  VOTE_TIMEOUT = 12
     
   DB = Sequel.connect 'sqlite://mmowriter.db'
 end
